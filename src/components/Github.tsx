@@ -9,6 +9,7 @@ type SearchResultType = { items: SearchUserType[] }
 export const Github = () => {
     const [selectedUser, setSelectedUser] = useState<string | null>(null)
     const [users, setUsers] = useState<SearchUserType[]>([])
+    const [tempSearch, setTempSearch] = useState<string>('')
 
     useEffect(() => {
         if (selectedUser) document.title = selectedUser
@@ -16,7 +17,7 @@ export const Github = () => {
 
     useEffect(() => {
         axios
-            .get<SearchResultType>('https://api.github.com/search/users?q=it-kamasutra')
+            .get<SearchResultType>(`https://api.github.com/search/users?q=${tempSearch}`)
             .then(res => setUsers(res.data.items))
     }, [])
 
@@ -24,8 +25,18 @@ export const Github = () => {
         <div className={s.container}>
             <div>
                 <div>
-                    <input placeholder={'search'}/>
-                    <button>Find</button>
+                    <input
+                        placeholder={'search'}
+                        onChange={event => setTempSearch(event.currentTarget.value)}
+                    />
+                    <button
+                        onClick={() => {
+                            axios
+                                .get<SearchResultType>(`https://api.github.com/search/users?q=${tempSearch}`)
+                                .then(res => setUsers(res.data.items))
+                        }}
+                    >Find
+                    </button>
                 </div>
                 <ul>
                     {users.map(u => {
