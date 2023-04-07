@@ -55,6 +55,51 @@ export const UsersList: React.FC<UsersListPropsType> = ({term, selectedUser, onU
 }
 
 
+type TimerPropsType = {}
+export const Timer = () => {
+    const [seconds, setSeconds] = useState(60)
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setSeconds((prevState) => prevState - 1)
+        }, 1000)
+
+        return () => clearInterval(intervalId)
+    }, [])
+
+    return <div>{seconds}</div>
+}
+
+
+type UserDetailsPropsType = { user: SearchUserType | null }
+export const UserDetails: React.FC<UserDetailsPropsType> = ({user}) => {
+    const [userDetails, setUserDetails] = useState<UserResultType | null>(null)
+
+    useEffect(() => {
+        if (!user) return
+        axios
+            .get<UserResultType>(`https://api.github.com/users/${user.login}`)
+            .then(res => setUserDetails(res.data))
+    }, [user])
+
+    return (
+        <div>
+
+            {userDetails && <div>
+                <Timer/>
+                <h2>user details:</h2>
+                <img
+                    src={userDetails.avatar_url}
+                    alt="userPhoto"
+                    style={{width: '200px'}}
+                />
+                <div>userId: {userDetails.id}</div>
+                <div>followers: {userDetails.followers}</div>
+            </div>}
+        </div>
+    )
+}
+
 type SearchUserType = { login: string, id: number }
 type SearchResultType = { items: SearchUserType[] }
 type UserResultType = {
@@ -65,20 +110,12 @@ type UserResultType = {
 }
 
 export const Github = () => {
-    const [selectedUser, setSelectedUser] = useState<SearchUserType | null>(null)
-    const [userDetails, setUserDetails] = useState<UserResultType | null>(null)
     let initialValue = 'wostrau'
     const [finalSearch, setFinalSearch] = useState<string>(initialValue)
+    const [selectedUser, setSelectedUser] = useState<SearchUserType | null>(null)
 
     useEffect(() => {
         if (selectedUser) document.title = selectedUser.login
-    }, [selectedUser])
-
-    useEffect(() => {
-        if (!selectedUser) return
-        axios
-            .get<UserResultType>(`https://api.github.com/users/${selectedUser.login}`)
-            .then(res => setUserDetails(res.data))
     }, [selectedUser])
 
     return (
@@ -103,17 +140,7 @@ export const Github = () => {
 
             </div>
             <div>
-                {!!userDetails && <>
-                    <h2>{userDetails.login}</h2>
-                    <img
-                        src={userDetails.avatar_url}
-                        alt="userPhoto"
-                        style={{width: '200px'}}
-                    />
-                    <div>userId: {userDetails.id}</div>
-                    <div>followers: {userDetails.followers}</div>
-                </>}
-
+                {selectedUser && <UserDetails user={selectedUser}/>}
             </div>
         </div>
     )
