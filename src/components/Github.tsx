@@ -55,9 +55,19 @@ export const UsersList: React.FC<UsersListPropsType> = ({term, selectedUser, onU
 }
 
 
-type TimerPropsType = {}
-export const Timer = () => {
-    const [seconds, setSeconds] = useState(60)
+type TimerPropsType = {
+    timerKey: string
+    timerValue: number
+    onChange: (actualSeconds: number) => void
+}
+export const Timer: React.FC<TimerPropsType> = ({timerValue, onChange, timerKey}) => {
+    const [seconds, setSeconds] = useState(timerValue)
+
+    useEffect(() => {
+        setSeconds(timerValue)
+    }, [timerValue])
+
+    useEffect(() => onChange(seconds), [seconds])
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -65,28 +75,41 @@ export const Timer = () => {
         }, 1000)
 
         return () => clearInterval(intervalId)
-    }, [])
+    }, [timerKey])
 
     return <div>{seconds}</div>
 }
 
 
 type UserDetailsPropsType = { user: SearchUserType | null }
+const startValue: number = 10
 export const UserDetails: React.FC<UserDetailsPropsType> = ({user}) => {
     const [userDetails, setUserDetails] = useState<UserResultType | null>(null)
+    const [seconds, setSeconds] = useState<number>(startValue)
 
     useEffect(() => {
         if (!user) return
         axios
             .get<UserResultType>(`https://api.github.com/users/${user.login}`)
-            .then(res => setUserDetails(res.data))
+            .then(res => {
+                setSeconds(startValue)
+                setUserDetails(res.data)
+            })
     }, [user])
+
+    useEffect(() => {
+        if (seconds < 1) setUserDetails(null)
+    }, [seconds])
 
     return (
         <div>
 
             {userDetails && <div>
-                <Timer/>
+                <Timer
+                    timerValue={seconds}
+                    onChange={setSeconds}
+                    timerKey={userDetails.id.toString()}
+                />
                 <h2>user details:</h2>
                 <img
                     src={userDetails.avatar_url}
