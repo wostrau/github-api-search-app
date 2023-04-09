@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import {Timer} from './Timer'
 import {SearchUserType} from './Github'
+import {Grid, Paper} from '@mui/material'
 
 type UserResultType = {
     login: string
@@ -36,8 +37,11 @@ export const UserDetails: React.FC<UserDetailsPropsType> = ({user}) => {
     }, [seconds])
 
     return (
-        <div>
-
+        <Grid item>
+            <Paper
+                elevation={3}
+                style={{padding: '10px'}}
+            >
             {userDetails && <div>
                 <Timer
                     timerValue={seconds}
@@ -53,6 +57,7 @@ export const UserDetails: React.FC<UserDetailsPropsType> = ({user}) => {
                 <div>userId: {userDetails.id}</div>
                 <div>followers: {userDetails.followers}</div>
             </div>}
-        </div>
+            </Paper>
+        </Grid>
     )
 }

@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import {Grid, Paper} from '@mui/material'
 
 
 type TimerPropsType = {
@@ -25,5 +26,14 @@ export const Timer: React.FC<TimerPropsType> = ({timerValue, onChange, timerKey}
         return () => clearInterval(intervalId)
     }, [timerKey])
 
-    return <div>{seconds}</div>
+    return (
+        <Grid item>
+            <Paper
+            elevation={3}
+            style={{padding: '10px'}}
+            >
+                {seconds}
+            </Paper>
+        </Grid>
+    )
 }

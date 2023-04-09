@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import s from '../App.module.css'
 import {SearchUserType} from './Github'
-import {List, ListItem, ListItemText} from '@mui/material'
+import {Grid, List, ListItem, ListItemText, Paper} from '@mui/material'
 
 
 type SearchResultType = { items: SearchUserType[] }
@@ -23,21 +23,28 @@ export const UsersList: React.FC<UsersListPropsType> = ({term, selectedUser, onU
     }, [term])
 
     return (
-        <List>
-            {users.map(u => {
-                return (
-                    <ListItem
-                        key={u.id}
-                        //className={selectedUser?.login === u.login ? s.selected : ''}
-                        selected={selectedUser?.login === u.login}
-                        onClick={() => onUserSelect(u)}
-                        disablePadding
-                        divider
-                    >
-                        <ListItemText primary={`user: ${u.login}`}/>
-                    </ListItem>
-                )
-            })}
-        </List>
+        <Grid item>
+            <Paper
+                elevation={3}
+                style={{padding: '10px', height: '70vh'}}
+            >
+            <List>
+                {users.map(u => {
+                    return (
+                        <ListItem
+                            key={u.id}
+                            //className={selectedUser?.login === u.login ? s.selected : ''}
+                            selected={selectedUser?.login === u.login}
+                            onClick={() => onUserSelect(u)}
+                            disablePadding
+                            divider
+                        >
+                            <ListItemText primary={`user: ${u.login}`}/>
+                        </ListItem>
+                    )
+                })}
+            </List>
+            </Paper>
+        </Grid>
     )
 }

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Button, Input} from '@mui/material'
+import {Button, Grid, Input, Paper} from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 
 
@@ -14,7 +14,11 @@ export const Search: React.FC<SearchPropsType> = ({value, onSubmit}) => {
     useEffect(() => setTempSearch(value), [value])
 
     return (
-        <div>
+        <Grid item>
+            <Paper
+                elevation={3}
+                style={{padding: '10px'}}
+            >
             <Input
                 placeholder={'search'}
                 value={tempSearch}
@@ -32,6 +36,7 @@ export const Search: React.FC<SearchPropsType> = ({value, onSubmit}) => {
                     style={{paddingLeft: '5px'}}
                 />
             </Button>
-        </div>
+        </Paper>
+        </Grid>
     )
 }

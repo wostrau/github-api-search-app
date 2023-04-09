@@ -20,6 +20,7 @@ export const Github = () => {
     return (
         <div className={s.container}>
             <div>
+
                 <Search
                     value={finalSearch}
                     onSubmit={(fixedValue: string) => setFinalSearch(fixedValue)}
@@ -31,6 +32,7 @@ export const Github = () => {
                         setSelectedUser({login: initialValue, id: 29176361})
                     }}
                     color={'secondary'}
+                    variant={'outlined'}
                 >Reset
                     <RestartAltSharpIcon
                         style={{paddingLeft: '5px'}}
