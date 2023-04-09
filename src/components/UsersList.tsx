@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
-import s from '../App.module.css'
 import {SearchUserType} from './Github'
 import {Grid, List, ListItem, ListItemText, Paper} from '@mui/material'
 

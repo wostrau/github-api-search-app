@@ -38,11 +38,10 @@ export const UserDetails: React.FC<UserDetailsPropsType> = ({user}) => {
 
     return (
         <Grid item>
-            <Paper
+            {userDetails && <Paper
                 elevation={3}
                 style={{padding: '10px'}}
             >
-            {userDetails && <div>
                 <Timer
                     timerValue={seconds}
                     onChange={setSeconds}
@@ -56,8 +55,7 @@ export const UserDetails: React.FC<UserDetailsPropsType> = ({user}) => {
                 />
                 <div>userId: {userDetails.id}</div>
                 <div>followers: {userDetails.followers}</div>
-            </div>}
-            </Paper>
+            </Paper>}
         </Grid>
     )
 }
